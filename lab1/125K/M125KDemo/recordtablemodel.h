@@ -33,6 +33,9 @@ public:
     int addRecord(QString &tagId, QString &time, QString status, QString duration, int times);
 
     void updateRecord(int row,QString &tagId, QString &time, QString status, QString duration, int times);
+
+    //删除所有记录
+    bool clearRecord();
 private:
     QSqlDatabase db;
 

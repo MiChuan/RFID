@@ -3,6 +3,8 @@
 #include "recordtablemodel.h"
 #include <QMessageBox>
 #include <QDebug>
+#include <QDateTime>
+#include <QTime>
 /**************************************
  *作者: jianghj@up-tech.com
  *日期: 2016-09-30
@@ -103,6 +105,7 @@ void MainWindow::on_btn_refresh_clicked()
     QStringList list = getSerialName();
     ui->serialNameBox->clear();
     ui->serialNameBox->addItems(list);
+    //model->clearRecord();
 }
 /**
  * @brief MainWindow::checkCustomBaudRatePolicy
@@ -128,6 +131,8 @@ void MainWindow::readData()
 {    
     if(serialPort->bytesAvailable() < 5)
         return;
+    QTime m_time;
+    m_time.setHMS(0, 0, 0, 0); //初始化数据
     QByteArray data = serialPort->readAll();
     if(m125dll->LF125K_FrameAnalysis((uint8 *)(data.data())) == 0)
     {
@@ -146,7 +151,7 @@ void MainWindow::readData()
             if(status == tr("进"))
                 model->addRecord(tagId, time, tr("出"), m_time.addSecs(reTime.secsTo(curTime)).toString("hh:mm:ss"), times+1);
             else
-                model->addRecord(tagId, time, tr("进"), "00:00:00", 1);
+                model->addRecord(tagId, time, tr("进"), "00:00:00", times+1);
         }
         else {
             model->addRecord(tagId, time, tr("进"), "00:00:00", 1);

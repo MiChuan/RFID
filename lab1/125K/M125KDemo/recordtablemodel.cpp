@@ -48,7 +48,7 @@ void RecordTableModel::createTable()
     str += header.at(1) + tr(" varchar, ");//Time
     str += header.at(2) + tr(" varchar, ");//Status
     str += header.at(3) + tr(" varchar, ");//Duration
-    str += header.at(3) + tr(" int) ");//Times
+    str += header.at(4) + tr(" varchar) ");//Times
     qDebug()<<"Sql: " << str.toUtf8().data();
     bool ret = query.exec(str);
     if(ret == true){
@@ -139,4 +139,16 @@ int RecordTableModel::addRecord(QString &tagId, QString &time, QString status, Q
     record.setValue(4, QVariant(times));
     insertRecord(-1, record);//插入表末尾
     return rowCount();
+}
+/**
+ * @brief RecordTableModel::clearRecord
+ * @return 如果成功返回true，否则false
+ * 删除数据库记录
+ */
+bool RecordTableModel::clearRecord()
+{
+    for(int row=0; row < rowCount(); ++row){
+        removeRow(row);
+    }
+    return submitAll();
 }
