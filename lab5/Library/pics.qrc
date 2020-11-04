@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/book.png</file>
+        <file>images/about.png</file>
+        <file>images/bind.png</file>
+        <file>images/borrow.png</file>
+        <file>images/found.png</file>
+        <file>images/login.png</file>
+        <file>images/logout.png</file>
+        <file>images/lost.png</file>
+        <file>images/register.png</file>
+        <file>images/return.png</file>
+        <file>images/unreg.png</file>
+        <file>images/viewall.png</file>
+        <file>images/viewrecord.png</file>
+    </qresource>
+</RCC>

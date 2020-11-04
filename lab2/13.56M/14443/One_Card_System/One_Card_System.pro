@@ -91,3 +91,9 @@ DEPENDPATH += $$PWD/
 
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/lib/M1356Dll.lib
 else:win32-g++: PRE_TARGETDEPS += $$PWD/lib/libM1356Dll.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/ -lM1356Dll
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/ -lM1356Dlld
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
