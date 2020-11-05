@@ -13,5 +13,7 @@
         <file>images/unreg.png</file>
         <file>images/viewall.png</file>
         <file>images/viewrecord.png</file>
+        <file>images/welcome.png</file>
+        <file>images/mainpage.png</file>
     </qresource>
 </RCC>

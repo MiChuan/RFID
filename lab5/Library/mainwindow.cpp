@@ -12,8 +12,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->logout->setDisabled(true);//未登陆禁用退出功能
     ui->admin->setDisabled(true);//未登陆禁用管理员操作
     ui->user->setDisabled(true);//未登陆禁用用户操作
+    ui->stackedWidget->setCurrentIndex(0);
 
-    this->IsLogin = false;
+    this->IsLogin = noLogin;
 
     this->handConnect();
     this->addWidgets();
@@ -26,12 +27,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::addWidgets()
 {
-
+    Welcome *welcome = new Welcome(this);
+    ui->stackedWidget->addWidget(welcome);//0
 }
 
 void MainWindow::handConnect()
 {
     connect(ui->about,SIGNAL(triggered(bool)),this,SLOT(About()));
+    connect(ui->login,SIGNAL(triggered(bool)),this,SLOT(LoginSys()));
+    connect(ui->logout,SIGNAL(triggered(bool)),this,SLOT(ExitSys()));
+    connect(ui->mainpage,SIGNAL(triggered(bool)),this,SLOT(viewMainPage()));
 }
 
 /**
@@ -53,7 +58,26 @@ void MainWindow::About()
  */
 void MainWindow::LoginSys()
 {
-
+    login *loginpage = new login(this,&IsLogin);
+    loginpage->setWindowTitle("用户登录");
+    //loginpage->show();
+    loginpage->exec();
+    if(this->IsLogin == adminLogin) {
+        ui->statusBar->showMessage(tr("管理员登录成功"));
+        ui->login->setDisabled(true);
+        ui->logout->setEnabled(true);
+        ui->admin->setEnabled(true);
+    }
+    else if(this->IsLogin == userLogin) {
+        ui->statusBar->showMessage(tr("用户登录成功"));
+        ui->login->setDisabled(true);
+        ui->logout->setEnabled(true);
+        ui->user->setEnabled(true);
+    }
+    else {
+        ui->statusBar->showMessage(tr("登录失败"));
+    }
+    delete loginpage;
 }
 
 /**
@@ -62,7 +86,23 @@ void MainWindow::LoginSys()
  */
 void MainWindow::ExitSys()
 {
+    this->IsLogin = noLogin;
+    ui->login->setEnabled(true);
+    ui->logout->setDisabled(true);
+    ui->admin->setDisabled(true);//未登陆禁用管理员操作
+    ui->user->setDisabled(true);//未登陆禁用用户操作
+    ui->statusBar->showMessage(tr("退出登录"));
+    ui->stackedWidget->setCurrentIndex(0);
+}
 
+/**
+ * @brief MainWindow::viewMainPage
+ * 显示welcome页面
+ */
+void MainWindow::viewMainPage()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+    ui->statusBar->showMessage("返回主页");
 }
 
 //窗口关闭响应事件
@@ -88,9 +128,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
  * @return 如果已经登陆返回ture,否则false
  * 监测是否登陆
  */
-bool MainWindow::CheckLogin()
+int MainWindow::CheckLogin()
 {
-    if(!IsLogin)
+    if(IsLogin == noLogin)
         QMessageBox::warning(this,tr("提示"),tr("您尚未登录，无权操作，请先登录！"),QMessageBox::Yes);
     return IsLogin;
 }

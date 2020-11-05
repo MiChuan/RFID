@@ -15,7 +15,7 @@ public:
     QString GetMD5String(QString src);//将原字符串进行MD5编码
 
 private:
-    QString filePath = "F:\\QTproject\\RFID_Design\\MQTT\\AnalyzeData\\config.ini";
+    QString filePath = "F:\\QTproject\\RFID\\lab5\\Library\\tools\\config.ini";
 };
 
 #endif // USERACCOUNT_H

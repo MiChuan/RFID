@@ -30,7 +30,10 @@ SOURCES += \
         mainwindow.cpp \
     tools/tools.cpp \
     tools/useraccount.cpp \
-    database/dbhelper.cpp
+    database/dbhelper.cpp \
+    tools/uhf_thread.cpp \
+    pages/login.cpp \
+    pages/welcome.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,10 +42,22 @@ HEADERS += \
     tools/useraccount.h \
     database/dbhelper.h \
     inc/m1356dll.h \
-    inc/m1356dll_global.h
+    inc/m1356dll_global.h \
+    tools/uhf_thread.h \
+    pages/login.h \
+    pages/welcome.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    pages/login.ui \
+    pages/welcome.ui
 
-RESOURCES += \
-    pics.qrc
+RESOURCES += pics.qrc
+
+win32: LIBS += -L$$PWD/lib/ -lM1356Dll
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/lib/M1356Dll.lib
+else:win32-g++: PRE_TARGETDEPS += $$PWD/lib/libM1356Dll.a
