@@ -38,6 +38,7 @@ private slots:
     void LoginSys(); //登陆
     void ExitSys(); //退出
     void viewMainPage(); //显示主页
+    void viewInfoTable(); //显示信息表
 
 signals:
     void sendAction(QAction *action);

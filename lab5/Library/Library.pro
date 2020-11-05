@@ -33,7 +33,8 @@ SOURCES += \
     database/dbhelper.cpp \
     tools/uhf_thread.cpp \
     pages/login.cpp \
-    pages/welcome.cpp
+    pages/welcome.cpp \
+    pages/viewinfo.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -45,12 +46,14 @@ HEADERS += \
     inc/m1356dll_global.h \
     tools/uhf_thread.h \
     pages/login.h \
-    pages/welcome.h
+    pages/welcome.h \
+    pages/viewinfo.h
 
 FORMS += \
         mainwindow.ui \
     pages/login.ui \
-    pages/welcome.ui
+    pages/welcome.ui \
+    pages/viewinfo.ui
 
 RESOURCES += pics.qrc
 

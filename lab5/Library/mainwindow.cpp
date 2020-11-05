@@ -29,6 +29,8 @@ void MainWindow::addWidgets()
 {
     Welcome *welcome = new Welcome(this);
     ui->stackedWidget->addWidget(welcome);//0
+    ViewInfo *viewInfo = new ViewInfo(this);
+    ui->stackedWidget->addWidget(viewInfo);//1
 }
 
 void MainWindow::handConnect()
@@ -37,6 +39,7 @@ void MainWindow::handConnect()
     connect(ui->login,SIGNAL(triggered(bool)),this,SLOT(LoginSys()));
     connect(ui->logout,SIGNAL(triggered(bool)),this,SLOT(ExitSys()));
     connect(ui->mainpage,SIGNAL(triggered(bool)),this,SLOT(viewMainPage()));
+    connect(ui->viewall,SIGNAL(triggered(bool)),this,SLOT(viewInfoTable()));
 }
 
 /**
@@ -103,6 +106,16 @@ void MainWindow::viewMainPage()
 {
     ui->stackedWidget->setCurrentIndex(0);
     ui->statusBar->showMessage("返回主页");
+}
+
+/**
+ * @brief MainWindow::viewInfoTable
+ * 显示信息表
+ */
+void MainWindow::viewInfoTable()
+{
+    ui->stackedWidget->setCurrentIndex(1);
+    ui->statusBar->showMessage("显示信息表");
 }
 
 //窗口关闭响应事件

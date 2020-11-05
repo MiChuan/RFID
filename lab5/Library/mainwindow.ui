@@ -110,14 +110,14 @@
     <addaction name="registe"/>
     <addaction name="unreg"/>
     <addaction name="bind"/>
+    <addaction name="lost"/>
+    <addaction name="found"/>
     <addaction name="viewall"/>
    </widget>
    <widget class="QMenu" name="user">
     <property name="title">
      <string>用户</string>
     </property>
-    <addaction name="lost"/>
-    <addaction name="found"/>
     <addaction name="borrow"/>
     <addaction name="returnbook"/>
     <addaction name="viewrecord"/>
