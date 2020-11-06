@@ -31,6 +31,10 @@ void MainWindow::addWidgets()
     ui->stackedWidget->addWidget(welcome);//0
     ViewInfo *viewInfo = new ViewInfo(this);
     ui->stackedWidget->addWidget(viewInfo);//1
+    Lost *lost = new Lost(this);
+    ui->stackedWidget->addWidget(lost);//2
+    Found *found = new Found(this);
+    ui->stackedWidget->addWidget(found);//3
 }
 
 void MainWindow::handConnect()
@@ -40,6 +44,8 @@ void MainWindow::handConnect()
     connect(ui->logout,SIGNAL(triggered(bool)),this,SLOT(ExitSys()));
     connect(ui->mainpage,SIGNAL(triggered(bool)),this,SLOT(viewMainPage()));
     connect(ui->viewall,SIGNAL(triggered(bool)),this,SLOT(viewInfoTable()));
+    connect(ui->lost,SIGNAL(triggered(bool)),this,SLOT(lostRecord()));
+    connect(ui->found,SIGNAL(triggered(bool)),this,SLOT(foundRecord()));
 }
 
 /**
@@ -116,6 +122,26 @@ void MainWindow::viewInfoTable()
 {
     ui->stackedWidget->setCurrentIndex(1);
     ui->statusBar->showMessage("显示信息表");
+}
+
+/**
+ * @brief MainWindow::lostRecord
+ * 挂失账户
+ */
+void MainWindow::lostRecord()
+{
+    ui->stackedWidget->setCurrentIndex(2);
+    ui->statusBar->showMessage("挂失账户");
+}
+
+/**
+ * @brief MainWindow::foundRecord
+ * 解除挂失账户
+ */
+void MainWindow::foundRecord()
+{
+    ui->stackedWidget->setCurrentIndex(3);
+    ui->statusBar->showMessage("解除挂失账户");
 }
 
 //窗口关闭响应事件

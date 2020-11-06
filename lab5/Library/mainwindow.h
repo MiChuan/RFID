@@ -39,6 +39,8 @@ private slots:
     void ExitSys(); //退出
     void viewMainPage(); //显示主页
     void viewInfoTable(); //显示信息表
+    void lostRecord(); //挂失
+    void foundRecord(); //解除挂失
 
 signals:
     void sendAction(QAction *action);

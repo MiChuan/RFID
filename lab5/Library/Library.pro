@@ -34,7 +34,9 @@ SOURCES += \
     tools/uhf_thread.cpp \
     pages/login.cpp \
     pages/welcome.cpp \
-    pages/viewinfo.cpp
+    pages/viewinfo.cpp \
+    pages/lost.cpp \
+    pages/found.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -47,13 +49,17 @@ HEADERS += \
     tools/uhf_thread.h \
     pages/login.h \
     pages/welcome.h \
-    pages/viewinfo.h
+    pages/viewinfo.h \
+    pages/lost.h \
+    pages/found.h
 
 FORMS += \
         mainwindow.ui \
     pages/login.ui \
     pages/welcome.ui \
-    pages/viewinfo.ui
+    pages/viewinfo.ui \
+    pages/lost.ui \
+    pages/found.ui
 
 RESOURCES += pics.qrc
 

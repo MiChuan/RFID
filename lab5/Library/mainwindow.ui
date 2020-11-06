@@ -41,8 +41,8 @@
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>40</y>
-      <width>781</width>
+      <y>10</y>
+      <width>851</width>
       <height>41</height>
      </rect>
     </property>
@@ -50,7 +50,17 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>连接管理</string>
+        <string>读卡器连接管理</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>端口</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -59,6 +69,16 @@
      </item>
      <item>
       <widget class="QComboBox" name="com"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>波特率</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QComboBox" name="rate"/>
@@ -74,6 +94,31 @@
       <widget class="QPushButton" name="disconnect">
        <property name="text">
         <string>断开</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>60</y>
+      <width>1041</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="Line" name="line">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
