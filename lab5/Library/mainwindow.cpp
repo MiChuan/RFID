@@ -35,6 +35,8 @@ void MainWindow::addWidgets()
     ui->stackedWidget->addWidget(lost);//2
     Found *found = new Found(this);
     ui->stackedWidget->addWidget(found);//3
+    ViewRecord *viewRecord = new ViewRecord(this);
+    ui->stackedWidget->addWidget(viewRecord);//4
 }
 
 void MainWindow::handConnect()
@@ -46,6 +48,7 @@ void MainWindow::handConnect()
     connect(ui->viewall,SIGNAL(triggered(bool)),this,SLOT(viewInfoTable()));
     connect(ui->lost,SIGNAL(triggered(bool)),this,SLOT(lostRecord()));
     connect(ui->found,SIGNAL(triggered(bool)),this,SLOT(foundRecord()));
+    connect(ui->viewrecord,SIGNAL(triggered(bool)),this,SLOT(ViewRecordTable()));
 }
 
 /**
@@ -82,6 +85,8 @@ void MainWindow::LoginSys()
         ui->login->setDisabled(true);
         ui->logout->setEnabled(true);
         ui->user->setEnabled(true);
+        LoginAccount = account->readConfig("/account/login_account");
+        //qDebug() << LoginAccount;
     }
     else {
         ui->statusBar->showMessage(tr("登录失败"));
@@ -101,6 +106,7 @@ void MainWindow::ExitSys()
     ui->admin->setDisabled(true);//未登陆禁用管理员操作
     ui->user->setDisabled(true);//未登陆禁用用户操作
     ui->statusBar->showMessage(tr("退出登录"));
+    account->writeConfig("/account/login_account","init");//重置保存的用户名
     ui->stackedWidget->setCurrentIndex(0);
 }
 
@@ -144,6 +150,16 @@ void MainWindow::foundRecord()
     ui->statusBar->showMessage("解除挂失账户");
 }
 
+/**
+ * @brief MainWindow::ViewRecordTable
+ * 查询借还书记录
+ */
+void MainWindow::ViewRecordTable()
+{
+    ui->stackedWidget->setCurrentIndex(4);
+    ui->statusBar->showMessage("查询借还书记录");
+}
+
 //窗口关闭响应事件
 void MainWindow::closeEvent(QCloseEvent *event)
 {
@@ -154,7 +170,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     message.setText(tr("您确定要退出吗？"));
     if (message.exec()==QMessageBox::Yes)
     {
-        //DB_Close();
+        account->writeConfig("/account/login_account","init");//重置保存的用户名
     }
     else
     {

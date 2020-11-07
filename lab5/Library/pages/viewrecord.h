@@ -1,5 +1,5 @@
-#ifndef VIEWINFO_H
-#define VIEWINFO_H
+#ifndef VIEWRECORD_H
+#define VIEWRECORD_H
 
 #include <QWidget>
 #include <QStandardItemModel>
@@ -10,31 +10,29 @@
 #include <QModelIndex>
 #include <QDebug>
 #include <QString>
-#include <QDate>
 #include "database/dbhelper.h"
+#include "tools/useraccount.h"
 
 namespace Ui {
-class ViewInfo;
+class ViewRecord;
 }
 
-class ViewInfo : public QWidget
+class ViewRecord : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ViewInfo(QWidget *parent = 0);
-    ~ViewInfo();
+    explicit ViewRecord(QWidget *parent = 0);
+    ~ViewRecord();
 
 private slots:
-    void on_userbtn_clicked();
-
     void on_borrowbtn_clicked();
 
-    void on_bookbtn_clicked();
-
 private:
-    Ui::ViewInfo *ui;
+    Ui::ViewRecord *ui;
+    userAccount *account = new userAccount();
+    QString LoginAccount;
     QSqlQueryModel *model;
 };
 
-#endif // VIEWINFO_H
+#endif // VIEWRECORD_H

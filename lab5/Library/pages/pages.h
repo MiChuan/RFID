@@ -6,5 +6,6 @@
 #include "viewinfo.h"
 #include "lost.h"
 #include "found.h"
+#include "viewrecord.h"
 
 #endif // PAGES_H

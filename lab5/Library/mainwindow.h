@@ -11,6 +11,7 @@
 #include "pages/pages.h"
 //#include "tools/uhf_thread.h"
 #include "database/dbhelper.h"
+#include "tools/useraccount.h"
 #include "tools/tools.h"
 
 #define CURRENT_VERSION "基于RFID技术的图书管理系统 V1.0"
@@ -41,6 +42,7 @@ private slots:
     void viewInfoTable(); //显示信息表
     void lostRecord(); //挂失
     void foundRecord(); //解除挂失
+    void ViewRecordTable(); //查询借还书记录
 
 signals:
     void sendAction(QAction *action);
@@ -53,6 +55,8 @@ protected:
 private:
     Ui::MainWindow *ui;
     int IsLogin; //登录标志
+    userAccount *account = new userAccount();
+    QString LoginAccount;
 };
 
 #endif // MAINWINDOW_H

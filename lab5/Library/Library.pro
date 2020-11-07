@@ -36,7 +36,8 @@ SOURCES += \
     pages/welcome.cpp \
     pages/viewinfo.cpp \
     pages/lost.cpp \
-    pages/found.cpp
+    pages/found.cpp \
+    pages/viewrecord.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -51,7 +52,8 @@ HEADERS += \
     pages/welcome.h \
     pages/viewinfo.h \
     pages/lost.h \
-    pages/found.h
+    pages/found.h \
+    pages/viewrecord.h
 
 FORMS += \
         mainwindow.ui \
@@ -59,7 +61,8 @@ FORMS += \
     pages/welcome.ui \
     pages/viewinfo.ui \
     pages/lost.ui \
-    pages/found.ui
+    pages/found.ui \
+    pages/viewrecord.ui
 
 RESOURCES += pics.qrc
 

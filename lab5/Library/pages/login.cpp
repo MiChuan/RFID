@@ -72,6 +72,7 @@ void login::on_login_btn_clicked()
                 return;
             }
             *(this->LogStatus) = userLogin;
+            account->writeConfig("/account/login_account",inputName);//保存登录用户名
         } else {
             QMessageBox::critical(this,"警告","用户不存在");
             return;
