@@ -30,30 +30,17 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:72pt; font-weight:600; color:#00aaff;&quot;&gt;解挂&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="found">
+  <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>460</y>
-     <width>93</width>
-     <height>28</height>
+     <x>310</x>
+     <y>290</y>
+     <width>351</width>
+     <height>88</height>
     </rect>
    </property>
-   <property name="text">
-    <string>解挂</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>310</y>
-     <width>461</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
+   <layout class="QFormLayout" name="formLayout">
+    <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
        <string>用户编号</string>
@@ -63,8 +50,39 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QLineEdit" name="num"/>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="userId"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>用户卡号</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="cardId"/>
+    </item>
+    <item row="2" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="getId">
+        <property name="text">
+         <string>识别卡号</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="found">
+        <property name="text">
+         <string>解挂</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>

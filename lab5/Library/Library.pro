@@ -28,32 +28,32 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    tools/tools.cpp \
     tools/useraccount.cpp \
     database/dbhelper.cpp \
-    tools/uhf_thread.cpp \
     pages/login.cpp \
     pages/welcome.cpp \
     pages/viewinfo.cpp \
     pages/lost.cpp \
     pages/found.cpp \
-    pages/viewrecord.cpp
+    pages/viewrecord.cpp \
+    tools/serialportthread.cpp \
+    tools/tools.cpp
 
 HEADERS += \
         mainwindow.h \
     pages/pages.h \
-    tools/tools.h \
     tools/useraccount.h \
     database/dbhelper.h \
     inc/m1356dll.h \
     inc/m1356dll_global.h \
-    tools/uhf_thread.h \
     pages/login.h \
     pages/welcome.h \
     pages/viewinfo.h \
     pages/lost.h \
     pages/found.h \
-    pages/viewrecord.h
+    pages/viewrecord.h \
+    tools/serialportthread.h \
+    tools/tools.h
 
 FORMS += \
         mainwindow.ui \

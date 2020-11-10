@@ -41,7 +41,7 @@ void ViewInfo::on_userbtn_clicked()
                     "CID as '卡号',"
                     "UNAME as '姓名',"
                     "TELEPHONE as '电话',"
-                    "STATUS as '账户状态',"
+                    "USTATUS as '账户状态',"
                     "BNUM as '可借数量'"
                     " from USER_INFO;");
     ui->tableView->setModel(model);
@@ -104,7 +104,8 @@ void ViewInfo::on_bookbtn_clicked()
                     "AUTHOR as '作者',"
                     "PRESS as '出版社',"
                     "PTIME as '出版时间',"
-                    "DURATION as '可借时长'"
+                    "DURATION as '可借时长',"
+                    "BSTATUS as '是否借出'"
                     " from BOOK_INFO;");
     ui->tableView->setModel(model);
     helper->closeDatabase();//关闭数据库

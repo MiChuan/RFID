@@ -67,7 +67,7 @@ void login::on_login_btn_clicked()
                 QMessageBox::critical(this,"警告","密码错误");
                 return;
             }
-            if(query.value("STATUS").toString() != "Y"){
+            if(query.value("USTATUS").toString() != "Y"){
                 QMessageBox::critical(this,"警告","账户未激活");
                 return;
             }

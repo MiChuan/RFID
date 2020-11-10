@@ -24,32 +24,17 @@ void Lost::on_lost_clicked()
     QSqlQuery query;
     helper->openDatabase();//链接数据库
     QString sql;
-    if(ui->method->currentText() == "用户编号"){
-        sql = QString("SELECT * FROM USER_INFO WHERE UID = '%1' and STATUS = 'Y';").arg(inputNum);
+    //验证用户编号
+    sql = QString("SELECT * FROM USER_INFO WHERE UID = '%1' and USTATUS = 'Y';").arg(inputNum);
+    query.prepare(sql);
+    query.exec();
+    if(query.next()){
+        sql = QString("UPDATE USER_INFO SET USTATUS = 'N' WHERE UID = '%1' and USTATUS = 'Y';").arg(inputNum);
         query.prepare(sql);
         query.exec();
-        if(query.next()){
-            sql = QString("UPDATE USER_INFO SET STATUS = 'N' WHERE UID = '%1' and STATUS = 'Y';").arg(inputNum);
-            query.prepare(sql);
-            query.exec();
-            QMessageBox::information(this, "提示", "挂失成功");
-            helper->closeDatabase();//关闭数据库
-            return;
-        }
-        QMessageBox::critical(this,"警告","该账户未激活");
+        QMessageBox::information(this, "提示", "挂失成功");
+        helper->closeDatabase();//关闭数据库
+        return;
     }
-    else if(ui->method->currentText() == "用户卡号"){
-        sql = QString("SELECT * FROM USER_INFO WHERE CID = '%1' and STATUS = 'Y';").arg(inputNum);
-        query.prepare(sql);
-        query.exec();
-        if(query.next()){
-            sql = QString("UPDATE USER_INFO SET STATUS = 'N' WHERE CID = '%1' and STATUS = 'Y';").arg(inputNum);
-            query.prepare(sql);
-            query.exec();
-            QMessageBox::information(this, "提示", "挂失成功");
-            helper->closeDatabase();//关闭数据库
-            return;
-        }
-        QMessageBox::critical(this,"警告","该账户未激活");
-    }
+    QMessageBox::critical(this,"警告","该账户未激活");
 }

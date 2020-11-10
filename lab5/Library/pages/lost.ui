@@ -54,17 +54,13 @@ p, li { white-space: pre-wrap; }
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QComboBox" name="method">
-      <item>
-       <property name="text">
-        <string>用户编号</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>用户卡号</string>
-       </property>
-      </item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>用户编号</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
      </widget>
     </item>
     <item>
