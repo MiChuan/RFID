@@ -7,5 +7,6 @@
 #include "lost.h"
 #include "found.h"
 #include "viewrecord.h"
+#include "bind.h"
 
 #endif // PAGES_H

@@ -49,6 +49,9 @@ void MainWindow::addWidgets()
     ui->stackedWidget->addWidget(found);//3
     ViewRecord *viewRecord = new ViewRecord(this);
     ui->stackedWidget->addWidget(viewRecord);//4
+    Bind *bind = new Bind(this,serialPortThread);
+    connect(this,SIGNAL(sendCardId(QString)),bind,SLOT(on_cardIdReceived(QString)));
+    ui->stackedWidget->addWidget(bind);//5
     //RegistorWidget *registWidget = new RegistorWidget(this,serialPortThread);
     //connect(this,SIGNAL(sendCardId(QString)),registWidget,SLOT(on_tagIdReceived(QString)));
     //ui->stackedWidget->addWidget(registWidget);//5
@@ -64,7 +67,6 @@ void MainWindow::handConnect()
     connect(ui->lost,SIGNAL(triggered(bool)),this,SLOT(lostRecord()));
     connect(ui->found,SIGNAL(triggered(bool)),this,SLOT(foundRecord()));
     connect(ui->viewrecord,SIGNAL(triggered(bool)),this,SLOT(ViewRecordTable()));
-    connect(ui->disconnect,SIGNAL(triggered(bool)),this,SLOT(Disconnect()));
     connect(serialPortThread,SIGNAL(sendMsg(char*,int)),this,SLOT(onSendMessage(char*,int)));
     connect(serialPortThread,SIGNAL(wirteMsgError(QString)),this,SLOT(onOperationError(QString)));
     connect(serialPortThread,SIGNAL(receivedMsg(QByteArray)),this,SLOT(on_serialMsgreceived(QByteArray)));
@@ -205,15 +207,16 @@ void MainWindow::fillPortsParameters()
         manufacturer = info.manufacturer();
         serialNumber = info.serialNumber();
         list << info.portName()
-             << (!description.isEmpty() ? description : blankString)
-             << (!manufacturer.isEmpty() ? manufacturer : blankString)
-             << (!serialNumber.isEmpty() ? serialNumber : blankString)
+             << (!description.isEmpty() ? description : "N/A")
+             << (!manufacturer.isEmpty() ? manufacturer : "N/A")
+             << (!serialNumber.isEmpty() ? serialNumber : "N/A")
              << info.systemLocation()
-             << (info.vendorIdentifier() ? QString::number(info.vendorIdentifier(), 16) : blankString)
-             << (info.productIdentifier() ? QString::number(info.productIdentifier(), 16) : blankString);
+             << (info.vendorIdentifier() ? QString::number(info.vendorIdentifier(), 16) : "N/A")
+             << (info.productIdentifier() ? QString::number(info.productIdentifier(), 16) : "N/A");
 
         ui->com->addItem(list.first(), list);
     }
+    ui->com->addItem(tr("NULL"));
 
     ui->rate->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);//0
     ui->rate->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);//1
@@ -376,4 +379,9 @@ void MainWindow::on_serialMsgreceived(QByteArray bytes){
             QMessageBox::warning(this,tr("温馨提示"),tr("寻卡失败，请调整卡与读卡器的距离后再试！"),QMessageBox::Yes);
         }
     }
+}
+
+void MainWindow::on_disconnect_clicked()
+{
+    this->Disconnect();
 }

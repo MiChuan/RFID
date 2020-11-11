@@ -61,7 +61,7 @@ void SerialPortThread::setRetryTimes(ReadRetryTimes times)
 }
 /**
  * @brief SerialPortThread::writeData
- * @param data 要发送的数据
+ * @param data 要发送到串口的已经char转hex后的数据
  * @param frameLen 一帧数据的长度
  * @param echo 用于控制是否回显
  * 发送数据

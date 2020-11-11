@@ -50,7 +50,6 @@ public:
             QString stringFlowControl;
      };//缓存串口配置信息
      Settings settings() const;//返回常量形式的配置信息
-     static const char blankString[] = QT_TRANSLATE_NOOP("SettingsDialog", "N/A");
 
 private slots:
     void About(); //关于
@@ -67,6 +66,8 @@ private slots:
     void onOperationError(QString msg); //串口发生错误时接收错误信息槽
     void onSendMessage(char *data, int frameLen);//串口消息发送槽
     void on_serialMsgreceived(QByteArray bytes);//串口消息接收槽
+
+    void on_disconnect_clicked();
 
 signals:
     void sendAction(QAction *action);

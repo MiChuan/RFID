@@ -70,6 +70,9 @@ void Found::on_cardIdReceived(QString tagId)
         return;
     }
     //构造用户编号写入0块的命令帧
+    //需要将string中两个char转为quint8数组中一个8位的元素
+    //16个字符的CID-->8个元素quint8数组，每个元素高低4位各代表一个字符
+    //"FF"-->0xFF
     uint16 frameLen;
     uint8 *p;
     uint8* vdata1;
