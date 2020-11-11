@@ -59,12 +59,12 @@ void Bind::on_cardIdReceived(QString tagId)
     query.prepare(sql);
     query.exec();
     if(query.next()){
-        ui->bindcard->setEnabled(true);//可以挂失，启用挂失按钮
+        ui->bindcard->setEnabled(true);//可以绑定，启用绑定按钮
         helper->closeDatabase();//关闭数据库
         return;
     }
     //新卡
-    ui->bindcard->setEnabled(true);//可以挂失，启用挂失按钮
+    ui->bindcard->setEnabled(true);//可以绑定，启用绑定按钮
     helper->closeDatabase();//关闭数据库
 }
 

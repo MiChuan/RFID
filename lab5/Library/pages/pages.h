@@ -8,5 +8,6 @@
 #include "found.h"
 #include "viewrecord.h"
 #include "bind.h"
+#include "registor.h"
 
 #endif // PAGES_H
