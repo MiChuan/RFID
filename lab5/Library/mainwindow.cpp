@@ -55,6 +55,9 @@ void MainWindow::addWidgets()
     Registor *regist = new Registor(this,serialPortThread);
     connect(this,SIGNAL(sendCardId(QString)),regist,SLOT(on_cardIdReceived(QString)));
     ui->stackedWidget->addWidget(regist);//6
+    Unregistor *unregistor = new Unregistor(this,serialPortThread);
+    connect(this,SIGNAL(sendCardId(QString)),unregistor,SLOT(on_cardIdReceived(QString)));
+    ui->stackedWidget->addWidget(unregistor);//7
 }
 
 void MainWindow::handConnect()

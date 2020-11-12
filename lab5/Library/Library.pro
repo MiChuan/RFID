@@ -39,7 +39,8 @@ SOURCES += \
     tools/serialportthread.cpp \
     tools/tools.cpp \
     pages/bind.cpp \
-    pages/registor.cpp
+    pages/registor.cpp \
+    pages/unregistor.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -57,7 +58,8 @@ HEADERS += \
     tools/serialportthread.h \
     tools/tools.h \
     pages/bind.h \
-    pages/registor.h
+    pages/registor.h \
+    pages/unregistor.h
 
 FORMS += \
         mainwindow.ui \
@@ -68,7 +70,8 @@ FORMS += \
     pages/found.ui \
     pages/viewrecord.ui \
     pages/bind.ui \
-    pages/registor.ui
+    pages/registor.ui \
+    pages/unregistor.ui
 
 RESOURCES += pics.qrc
 

@@ -9,5 +9,6 @@
 #include "viewrecord.h"
 #include "bind.h"
 #include "registor.h"
+#include "unregistor.h"
 
 #endif // PAGES_H
