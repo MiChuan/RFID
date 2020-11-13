@@ -10,5 +10,6 @@
 #include "bind.h"
 #include "registor.h"
 #include "unregistor.h"
+#include "borrow.h"
 
 #endif // PAGES_H

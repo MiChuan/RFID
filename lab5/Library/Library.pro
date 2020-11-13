@@ -40,7 +40,8 @@ SOURCES += \
     tools/tools.cpp \
     pages/bind.cpp \
     pages/registor.cpp \
-    pages/unregistor.cpp
+    pages/unregistor.cpp \
+    pages/borrow.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -59,7 +60,8 @@ HEADERS += \
     tools/tools.h \
     pages/bind.h \
     pages/registor.h \
-    pages/unregistor.h
+    pages/unregistor.h \
+    pages/borrow.h
 
 FORMS += \
         mainwindow.ui \
@@ -71,7 +73,8 @@ FORMS += \
     pages/viewrecord.ui \
     pages/bind.ui \
     pages/registor.ui \
-    pages/unregistor.ui
+    pages/unregistor.ui \
+    pages/borrow.ui
 
 RESOURCES += pics.qrc
 

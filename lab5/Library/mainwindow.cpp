@@ -58,6 +58,9 @@ void MainWindow::addWidgets()
     Unregistor *unregistor = new Unregistor(this,serialPortThread);
     connect(this,SIGNAL(sendCardId(QString)),unregistor,SLOT(on_cardIdReceived(QString)));
     ui->stackedWidget->addWidget(unregistor);//7
+    Borrow *borrow = new Borrow(this,serialPortThread);
+    connect(this,SIGNAL(sendCardId(QString)),borrow,SLOT(on_cardIdReceived(QString)));
+    ui->stackedWidget->addWidget(borrow);//8
 }
 
 void MainWindow::handConnect()
@@ -70,6 +73,10 @@ void MainWindow::handConnect()
     connect(ui->lost,SIGNAL(triggered(bool)),this,SLOT(lostRecord()));
     connect(ui->found,SIGNAL(triggered(bool)),this,SLOT(foundRecord()));
     connect(ui->viewrecord,SIGNAL(triggered(bool)),this,SLOT(ViewRecordTable()));
+    connect(ui->bind,SIGNAL(triggered(bool)),this,SLOT(BindBook()));
+    connect(ui->registe,SIGNAL(triggered(bool)),this,SLOT(RegistorUser()));
+    connect(ui->unreg,SIGNAL(triggered(bool)),this,SLOT(UnregistorUser()));
+    connect(ui->borrow,SIGNAL(triggered(bool)),this,SLOT(BorrowBook()));
     connect(serialPortThread,SIGNAL(sendMsg(char*,int)),this,SLOT(onSendMessage(char*,int)));
     connect(serialPortThread,SIGNAL(wirteMsgError(QString)),this,SLOT(onOperationError(QString)));
     connect(serialPortThread,SIGNAL(receivedMsg(QByteArray)),this,SLOT(on_serialMsgreceived(QByteArray)));
@@ -192,6 +199,46 @@ void MainWindow::ViewRecordTable()
 {
     ui->stackedWidget->setCurrentIndex(4);
     ui->statusBar->showMessage("查询借还书记录");
+}
+
+/**
+ * @brief MainWindow::BindBook
+ * 绑定图书
+ */
+void MainWindow::BindBook()
+{
+    ui->stackedWidget->setCurrentIndex(5);
+    ui->statusBar->showMessage("绑定图书");
+}
+
+/**
+ * @brief MainWindow::RegistorUser
+ * 用户注册
+ */
+void MainWindow::RegistorUser()
+{
+    ui->stackedWidget->setCurrentIndex(6);
+    ui->statusBar->showMessage("用户注册");
+}
+
+/**
+ * @brief MainWindow::UnregistorUser
+ * 用户注销
+ */
+void MainWindow::UnregistorUser()
+{
+    ui->stackedWidget->setCurrentIndex(7);
+    ui->statusBar->showMessage("用户注销");
+}
+
+/**
+ * @brief MainWindow::BorrowBook
+ * 借书
+ */
+void MainWindow::BorrowBook()
+{
+    ui->stackedWidget->setCurrentIndex(8);
+    ui->statusBar->showMessage("借书");
 }
 
 /**
