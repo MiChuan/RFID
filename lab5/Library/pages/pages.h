@@ -11,5 +11,6 @@
 #include "registor.h"
 #include "unregistor.h"
 #include "borrow.h"
+#include "returnbook.h"
 
 #endif // PAGES_H

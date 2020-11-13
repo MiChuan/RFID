@@ -64,6 +64,7 @@ private slots:
     void RegistorUser(); //用户注册
     void UnregistorUser(); //用户注销
     void BorrowBook(); //借书
+    void ReBook(); //还书
 
     void fillPortsParameters();//填充串口参数
     void on_connect_clicked();

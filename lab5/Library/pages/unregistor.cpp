@@ -38,6 +38,12 @@ void Unregistor::on_cardIdReceived(QString tagId)
         helper->closeDatabase();//关闭数据库
         return;
     }
+    //未还书
+    if(query.value("BNUM").toInt() < 5){
+        QMessageBox::critical(this,"警告","该账户未还书，不能注销");
+        helper->closeDatabase();//关闭数据库
+        return;
+    }
     //已激活的卡
     ui->unreg->setEnabled(true);//可以注销，启用注销按钮
     helper->closeDatabase();//关闭数据库

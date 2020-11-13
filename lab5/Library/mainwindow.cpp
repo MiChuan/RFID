@@ -61,6 +61,9 @@ void MainWindow::addWidgets()
     Borrow *borrow = new Borrow(this,serialPortThread);
     connect(this,SIGNAL(sendCardId(QString)),borrow,SLOT(on_cardIdReceived(QString)));
     ui->stackedWidget->addWidget(borrow);//8
+    ReturnBook *returnbook = new ReturnBook(this,serialPortThread);
+    connect(this,SIGNAL(sendCardId(QString)),returnbook,SLOT(on_cardIdReceived(QString)));
+    ui->stackedWidget->addWidget(returnbook);//9
 }
 
 void MainWindow::handConnect()
@@ -77,6 +80,7 @@ void MainWindow::handConnect()
     connect(ui->registe,SIGNAL(triggered(bool)),this,SLOT(RegistorUser()));
     connect(ui->unreg,SIGNAL(triggered(bool)),this,SLOT(UnregistorUser()));
     connect(ui->borrow,SIGNAL(triggered(bool)),this,SLOT(BorrowBook()));
+    connect(ui->returnbook,SIGNAL(triggered(bool)),this,SLOT(ReBook()));
     connect(serialPortThread,SIGNAL(sendMsg(char*,int)),this,SLOT(onSendMessage(char*,int)));
     connect(serialPortThread,SIGNAL(wirteMsgError(QString)),this,SLOT(onOperationError(QString)));
     connect(serialPortThread,SIGNAL(receivedMsg(QByteArray)),this,SLOT(on_serialMsgreceived(QByteArray)));
@@ -239,6 +243,16 @@ void MainWindow::BorrowBook()
 {
     ui->stackedWidget->setCurrentIndex(8);
     ui->statusBar->showMessage("借书");
+}
+
+/**
+ * @brief MainWindow::BorrowBook
+ * 还书
+ */
+void MainWindow::ReBook()
+{
+    ui->stackedWidget->setCurrentIndex(9);
+    ui->statusBar->showMessage("还书");
 }
 
 /**

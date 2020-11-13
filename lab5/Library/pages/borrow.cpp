@@ -220,11 +220,11 @@ void Borrow::on_borrow_clicked()
     }
 
     //更新用户信息
-    sql = QString("UPDATE USER_INFO SET BNUM = %1 WHERE UID = '%2';").arg(BNUM.toInt()-1).arg(UID);
+    sql = QString("UPDATE USER_INFO SET BNUM = %1 WHERE UID = '%2';").arg(QString::number(BNUM.toInt()-1)).arg(UID);
     query.prepare(sql);
     query.exec();
     //检查写入情况
-    sql = QString("SELECT * FROM USER_INFO WHERE UID = '%1' AND BNUM = %2;").arg(UID).arg(BNUM.toInt()-1);
+    sql = QString("SELECT * FROM USER_INFO WHERE UID = '%1' AND BNUM = %2;").arg(UID).arg(QString::number(BNUM.toInt()-1));
     query.prepare(sql);
     query.exec();
     if(!query.next()){
