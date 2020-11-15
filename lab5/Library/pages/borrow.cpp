@@ -62,16 +62,16 @@ void Borrow::on_cardIdReceived(QString tagId)
             ui->duration->setText(query.value("DURATION").toString());
 
 //            QStringList datenow = this->curDate.toString("yyyy-MM-dd").split("-");
-            int dur = ui->duration->text().toInt();
+            int dur = ui->duration->text().toInt();//可借时长
 //            int year = QString(datenow.at(0)).toInt();
 //            int month = QString(datenow.at(1)).toInt();
 //            int day = QString(datenow.at(2)).toInt();
 
             QDate d = curDate;
-            d = d.addDays(dur);
+            d = d.addDays(dur);//借书时间加上可借时长为截止日期
 
             QString dateDDL = d.toString("yyyy-MM-dd");
-            ui->ddl->setText(query.value(dateDDL).toString());
+            ui->ddl->setText(dateDDL);
             helper->closeDatabase();//关闭数据库
             return;
         }

@@ -7,6 +7,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMessageBox>
+#include <QDate>
 #include "tools/useraccount.h"
 #include "database/dbhelper.h"
 
@@ -21,6 +22,7 @@ class login : public QDialog
 public:
     explicit login(QWidget *parent = 0,int *IsLogin = nullptr);
     ~login();
+    void remindReturnBook(QString UID);
 
     const int noLogin = 0;
     const int adminLogin = 1;
@@ -33,8 +35,10 @@ private:
     Ui::login *ui;
     QString user;
     QString pwd;
+    int remindTime;
     int *LogStatus;
     userAccount *account = new userAccount();
+    QDate curDate;
 };
 
 #endif // LOGIN_H
