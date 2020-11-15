@@ -9,6 +9,8 @@ Found::Found(QWidget *parent, SerialPortThread *serialPortThread) :
     ui->found->setDisabled(true);
     this->serialPortThread = serialPortThread;
     m1356dll = new M1356Dll();
+    this->handleConnect();
+    CurOpt = InitOpt;
 }
 
 Found::~Found()
@@ -31,13 +33,20 @@ void Found::handleConnect()
  */
 void Found::on_found_clicked()
 {
+    if(CurOpt != FoundOpt){
+        CurOpt = InitOpt;
+        return;
+    }
+    CurOpt = InitOpt;//执行终点
     QString inputUser = ui->userId->text();
     QString inputCard = ui->cardId->text();
     if(ui->userId->text().isEmpty()){
         QMessageBox::critical(this,"警告","请输入正确账号");
+        CurOpt = InitOpt;
         return;
     } else if(ui->cardId->text().isEmpty()){
         QMessageBox::critical(this,"警告","请读取卡号");
+        CurOpt = InitOpt;
         return;
     }
     DBHelper *helper = DBHelper::getInstance();
@@ -55,6 +64,7 @@ void Found::on_found_clicked()
         return;
     }
     QMessageBox::critical(this,"警告","需要解除挂失的账户不存在");
+    CurOpt = InitOpt;
 }
 
 /**
@@ -64,9 +74,14 @@ void Found::on_found_clicked()
  */
 void Found::on_cardIdReceived(QString tagId)
 {
+    if(CurOpt != FoundOpt){
+        CurOpt = InitOpt;
+        return;
+    }
     QString inputUser = ui->userId->text();
     if(ui->userId->text().isEmpty()){
         QMessageBox::critical(this,"警告","请输入账号");
+        CurOpt = InitOpt;
         return;
     }
     //构造用户编号写入0块的命令帧
@@ -101,6 +116,7 @@ void Found::on_cardIdReceived(QString tagId)
     if(query.next()){
         QMessageBox::critical(this,"警告","该卡已被激活，不能用于解除挂失");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //已注销的卡
@@ -141,9 +157,11 @@ void Found::on_cardIdReceived(QString tagId)
  */
 void Found::on_getId_clicked()
 {
+    CurOpt = FoundOpt;//执行起点
     QString inputUser = ui->userId->text();
     if(ui->userId->text().isEmpty()){
         QMessageBox::critical(this,"警告","请输入账号");
+        CurOpt = InitOpt;
         return;
     }
     DBHelper *helper = DBHelper::getInstance();
@@ -155,6 +173,7 @@ void Found::on_getId_clicked()
     if(!query.next()){
         QMessageBox::critical(this,"警告","需要解除挂失的账户不存在");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
 
@@ -162,6 +181,7 @@ void Found::on_getId_clicked()
     if(!serialPortThread->serialPortIsOpen())
     {
         QMessageBox::critical(this,"警告","请先连接读卡器后再试！");
+        CurOpt = InitOpt;
         return;
     }
     uint16 frameLen;
@@ -178,6 +198,10 @@ void Found::on_getId_clicked()
  */
 void Found::onDecodeFrame(QByteArray bytes)
 {
+    if(CurOpt != FoundOpt){
+        CurOpt = InitOpt;
+        return;
+    }
     M1356_RspFrame_t frame = m1356dll->M1356_RspFrameConstructor(bytes);
     if(frame.status.left(2) == "00")
     {

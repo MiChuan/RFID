@@ -12,6 +12,8 @@ Borrow::Borrow(QWidget *parent, SerialPortThread *serialPortThread) :
     m1356dll = new M1356Dll();
     this->flag = Init;
     this->curDate = QDate::currentDate();
+    this->handleConnect();
+    CurOpt = InitOpt;
 }
 
 Borrow::~Borrow()
@@ -26,6 +28,10 @@ void Borrow::handleConnect()
 
 void Borrow::on_cardIdReceived(QString tagId)
 {
+    if(CurOpt != BorOpt){
+        CurOpt = InitOpt;
+        return;
+    }
     if(this->flag == BookCard){
         ui->bookId->setText(tagId);//填入识别到的卡号
         DBHelper *helper = DBHelper::getInstance();
@@ -39,6 +45,7 @@ void Borrow::on_cardIdReceived(QString tagId)
             QMessageBox::critical(this,"警告","该卡未绑定图书");
             this->flag = Init;
             helper->closeDatabase();//关闭数据库
+            CurOpt = InitOpt;
             return;
         }
         //可借出的书
@@ -72,6 +79,7 @@ void Borrow::on_cardIdReceived(QString tagId)
         QMessageBox::critical(this,"警告","该卡绑定的图书已借出");
         this->flag = Init;
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     else if(this->flag == UserCard){
@@ -87,6 +95,7 @@ void Borrow::on_cardIdReceived(QString tagId)
             QMessageBox::critical(this,"警告","该卡已被挂失，不能用于借书");
             this->flag = Init;
             helper->closeDatabase();//关闭数据库
+            CurOpt = InitOpt;
             return;
         }
         //已注销的卡
@@ -97,6 +106,7 @@ void Borrow::on_cardIdReceived(QString tagId)
             QMessageBox::critical(this,"警告","该卡已被注销，不能用于借书");
             this->flag = Init;
             helper->closeDatabase();//关闭数据库
+            CurOpt = InitOpt;
             return;
         }
         //已激活的卡
@@ -109,6 +119,7 @@ void Borrow::on_cardIdReceived(QString tagId)
             if(query.value("BNUM").toInt() == 0){
                 QMessageBox::critical(this,"警告","借书已满5本，请还书后再借书");
                 helper->closeDatabase();//关闭数据库
+                CurOpt = InitOpt;
                 return;
             }
             ui->borrow->setEnabled(true);
@@ -120,12 +131,18 @@ void Borrow::on_cardIdReceived(QString tagId)
         QMessageBox::critical(this,"警告","该卡非有效用户卡，不能用于借书");
         this->flag = Init;
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
 }
 
 void Borrow::onDecodeFrame(QByteArray bytes)
 {
+    if(CurOpt != BorOpt){
+        CurOpt = InitOpt;
+        return;
+    }
+    CurOpt = InitOpt;//执行终点
     M1356_RspFrame_t frame = m1356dll->M1356_RspFrameConstructor(bytes);
     if(frame.status.left(2) == "00")
     {
@@ -148,6 +165,7 @@ void Borrow::on_getuserId_clicked()
     if(!serialPortThread->serialPortIsOpen())
     {
         QMessageBox::critical(this,"警告","请先连接读卡器后再试！");
+        CurOpt = InitOpt;
         return;
     }
     uint16 frameLen;
@@ -160,9 +178,11 @@ void Borrow::on_getuserId_clicked()
 
 void Borrow::on_getbookId_clicked()
 {
+    CurOpt = BorOpt;//执行起点
     if(!serialPortThread->serialPortIsOpen())
     {
         QMessageBox::critical(this,"警告","请先连接读卡器后再试！");
+        CurOpt = InitOpt;
         return;
     }
     uint16 frameLen;
@@ -175,6 +195,10 @@ void Borrow::on_getbookId_clicked()
 
 void Borrow::on_borrow_clicked()
 {
+    if(CurOpt != BorOpt){
+        CurOpt = InitOpt;
+        return;
+    }
     QString BTIME = this->curDate.toString("yyyy-MM-dd");
     QString UID = ui->uid->text();
     QString CID = ui->userId->text();
@@ -230,6 +254,7 @@ void Borrow::on_borrow_clicked()
     if(!query.next()){
         QMessageBox::critical(this,"警告","写入数据库失败，请检查数据库连接后重新借书");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //更新图书信息到数据库
@@ -243,6 +268,7 @@ void Borrow::on_borrow_clicked()
     if(!query.next()){
         QMessageBox::critical(this,"警告","写入数据库失败，请检查数据库连接后重新借书");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //写入借书记录到数据库
@@ -257,6 +283,7 @@ void Borrow::on_borrow_clicked()
     if(!query.next()){
         QMessageBox::critical(this,"警告","写入数据库失败，请检查数据库连接后重新借书");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //写入数据库成功,写入借书记录到用户卡

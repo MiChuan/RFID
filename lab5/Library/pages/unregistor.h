@@ -44,6 +44,9 @@ private:
 
     SerialPortThread *serialPortThread;//串口线程
     int count; //记录写卡次数
+    const int InitOpt = 0;
+    const int UnRegOpt = 1;
+    int CurOpt;
 };
 
 #endif // UNREGISTOR_H

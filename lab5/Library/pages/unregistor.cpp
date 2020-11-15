@@ -10,6 +10,8 @@ Unregistor::Unregistor(QWidget *parent, SerialPortThread *serialPortThread) :
     this->serialPortThread = serialPortThread;
     m1356dll = new M1356Dll();
     count = InitCount;
+    this->handleConnect();
+    CurOpt = InitOpt;
 }
 
 Unregistor::~Unregistor()
@@ -24,6 +26,10 @@ void Unregistor::handleConnect()
 
 void Unregistor::on_cardIdReceived(QString tagId)
 {
+    if(CurOpt != UnRegOpt){
+        CurOpt = InitOpt;
+        return;
+    }
     QString userId = ui->userId->text();
     ui->cardId->setText(tagId);//填入识别到的卡号
     DBHelper *helper = DBHelper::getInstance();
@@ -36,12 +42,14 @@ void Unregistor::on_cardIdReceived(QString tagId)
     if(!query.next()){
         QMessageBox::critical(this,"警告","该账户不存在，不能注销");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //未还书
     if(query.value("BNUM").toInt() < 5){
         QMessageBox::critical(this,"警告","该账户未还书，不能注销");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //已激活的卡
@@ -52,6 +60,11 @@ void Unregistor::on_cardIdReceived(QString tagId)
 
 void Unregistor::onDecodeFrame(QByteArray bytes)
 {
+    if(CurOpt != UnRegOpt){
+        CurOpt = InitOpt;
+        return;
+    }
+    CurOpt = InitOpt;//执行终点
     M1356_RspFrame_t frame = m1356dll->M1356_RspFrameConstructor(bytes);
     if(frame.status.left(2) == "00")
     {
@@ -71,14 +84,17 @@ void Unregistor::onDecodeFrame(QByteArray bytes)
 
 void Unregistor::on_getId_clicked()
 {
+    CurOpt = UnRegOpt;//执行起点
     if(ui->userId->text().isEmpty()){
         QMessageBox::critical(this,"警告","请输入正确的用户编号");
+        CurOpt = InitOpt;
         return;
     }
 
     if(!serialPortThread->serialPortIsOpen())
     {
         QMessageBox::critical(this,"警告","请先连接读卡器后再试！");
+        CurOpt = InitOpt;
         return;
     }
     uint16 frameLen;
@@ -90,6 +106,10 @@ void Unregistor::on_getId_clicked()
 
 void Unregistor::on_unreg_clicked()
 {
+    if(CurOpt != UnRegOpt){
+        CurOpt = InitOpt;
+        return;
+    }
     QString UID = ui->userId->text();
     DBHelper *helper = DBHelper::getInstance();
     QSqlQuery query;
@@ -105,6 +125,7 @@ void Unregistor::on_unreg_clicked()
 
     if(!query.next()){
         QMessageBox::critical(this,"警告","写入数据库失败，请检查数据库连接后重新注销");
+        CurOpt = InitOpt;
         return;
     }
     this->clearData();
@@ -112,6 +133,10 @@ void Unregistor::on_unreg_clicked()
 
 void Unregistor::clearData()
 {
+    if(CurOpt != UnRegOpt){
+        CurOpt = InitOpt;
+        return;
+    }
     QString CID = ui->cardId->text();
     QString NOP = "00000000";
 

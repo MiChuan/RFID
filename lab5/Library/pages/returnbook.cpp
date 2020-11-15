@@ -12,6 +12,8 @@ ReturnBook::ReturnBook(QWidget *parent, SerialPortThread *serialPortThread) :
     m1356dll = new M1356Dll();
     this->flag = Init;
     this->curDate = QDate::currentDate();
+    this->handleConnect();
+    CurOpt = InitOpt;
 }
 
 ReturnBook::~ReturnBook()
@@ -26,6 +28,10 @@ void ReturnBook::handleConnect()
 
 void ReturnBook::on_cardIdReceived(QString tagId)
 {
+    if(CurOpt != RetOpt){
+        CurOpt = InitOpt;
+        return;
+    }
     if(this->flag == BookCard){
         ui->bookId->setText(tagId);//填入识别到的卡号
         DBHelper *helper = DBHelper::getInstance();
@@ -39,6 +45,7 @@ void ReturnBook::on_cardIdReceived(QString tagId)
             QMessageBox::critical(this,"警告","该卡未绑定图书");
             this->flag = Init;
             helper->closeDatabase();//关闭数据库
+            CurOpt = InitOpt;
             return;
         }
         //已借出的书
@@ -55,6 +62,7 @@ void ReturnBook::on_cardIdReceived(QString tagId)
         QMessageBox::critical(this,"警告","该卡绑定的图书未借出");
         this->flag = Init;
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     else if(this->flag == UserCard){
@@ -70,6 +78,7 @@ void ReturnBook::on_cardIdReceived(QString tagId)
             QMessageBox::critical(this,"警告","该卡已被挂失，不能用于还书");
             this->flag = Init;
             helper->closeDatabase();//关闭数据库
+            CurOpt = InitOpt;
             return;
         }
         //已注销的卡
@@ -80,6 +89,7 @@ void ReturnBook::on_cardIdReceived(QString tagId)
             QMessageBox::critical(this,"警告","该卡已被注销，不能用于还书");
             this->flag = Init;
             helper->closeDatabase();//关闭数据库
+            CurOpt = InitOpt;
             return;
         }
         //已激活的卡
@@ -118,12 +128,18 @@ void ReturnBook::on_cardIdReceived(QString tagId)
         QMessageBox::critical(this,"警告","该卡非有效用户卡，不能用于还书");
         this->flag = Init;
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
 }
 
 void ReturnBook::onDecodeFrame(QByteArray bytes)
 {
+    if(CurOpt != RetOpt){
+        CurOpt = InitOpt;
+        return;
+    }
+    CurOpt = InitOpt;
     M1356_RspFrame_t frame = m1356dll->M1356_RspFrameConstructor(bytes);
     if(frame.status.left(2) == "00")
     {
@@ -146,6 +162,7 @@ void ReturnBook::on_getuserId_clicked()
     if(!serialPortThread->serialPortIsOpen())
     {
         QMessageBox::critical(this,"警告","请先连接读卡器后再试！");
+        CurOpt = InitOpt;
         return;
     }
     uint16 frameLen;
@@ -158,9 +175,11 @@ void ReturnBook::on_getuserId_clicked()
 
 void ReturnBook::on_getbookId_clicked()
 {
+    CurOpt = RetOpt;//执行起点
     if(!serialPortThread->serialPortIsOpen())
     {
         QMessageBox::critical(this,"警告","请先连接读卡器后再试！");
+        CurOpt = InitOpt;
         return;
     }
     uint16 frameLen;
@@ -173,5 +192,10 @@ void ReturnBook::on_getbookId_clicked()
 
 void ReturnBook::on_retbook_clicked()
 {
+    if(CurOpt != RetOpt){
+        CurOpt = InitOpt;
+        return;
+    }
+    CurOpt = InitOpt;//执行终点
     QMessageBox::information(this,tr("提示"),tr("还书成功！"),QMessageBox::Yes);
 }

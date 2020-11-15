@@ -47,6 +47,9 @@ private:
     const int UserCard = 2;
     int flag = 0;
     QDate curDate;
+    const int InitOpt = 0;
+    const int RetOpt = 1;
+    int CurOpt;
 };
 
 #endif // RETURNBOOK_H

@@ -159,7 +159,7 @@
     <item>
      <widget class="QPushButton" name="getbookId">
       <property name="text">
-       <string>识别用户卡号</string>
+       <string>识别书籍卡号</string>
       </property>
      </widget>
     </item>

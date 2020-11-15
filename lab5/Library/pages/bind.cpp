@@ -9,6 +9,8 @@ Bind::Bind(QWidget *parent, SerialPortThread *serialPortThread) :
     ui->bindcard->setDisabled(true);
     this->serialPortThread = serialPortThread;
     m1356dll = new M1356Dll();
+    this->handleConnect();
+    CurOpt = InitOpt;
 }
 
 Bind::~Bind()
@@ -23,6 +25,10 @@ void Bind::handleConnect()
 
 void Bind::on_cardIdReceived(QString tagId)
 {
+    if(CurOpt != BindOpt){
+        CurOpt = InitOpt;
+        return;
+    }
     ui->cardId->setText(tagId);//填入识别到的卡号
     DBHelper *helper = DBHelper::getInstance();
     QSqlQuery query;
@@ -34,6 +40,7 @@ void Bind::on_cardIdReceived(QString tagId)
     if(query.next()){
         QMessageBox::critical(this,"警告","该卡已被激活，不能用于绑定图书");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //已挂失的卡
@@ -43,6 +50,7 @@ void Bind::on_cardIdReceived(QString tagId)
     if(query.next()){
         QMessageBox::critical(this,"警告","该卡已被挂失，不能用于绑定图书");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //已绑定的卡
@@ -52,6 +60,7 @@ void Bind::on_cardIdReceived(QString tagId)
     if(query.next()){
         QMessageBox::critical(this,"警告","该卡已被绑定，不能用于绑定图书");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //已注销的卡
@@ -70,11 +79,20 @@ void Bind::on_cardIdReceived(QString tagId)
 
 void Bind::onDecodeFrame(QByteArray bytes)
 {
-
+    if(CurOpt != BindOpt){
+        CurOpt = InitOpt;
+        return;
+    }
+    CurOpt = InitOpt;
 }
 
 void Bind::on_bindcard_clicked()
 {
+    if(CurOpt != BindOpt){
+        CurOpt = InitOpt;
+        return;
+    }
+    CurOpt = InitOpt;//执行终点
     QString BID = ui->cardId->text();
     QString ISBN = ui->ISBN->text();
     QString bookname = ui->bookname->text();
@@ -99,23 +117,27 @@ void Bind::on_bindcard_clicked()
     helper->closeDatabase();//关闭数据库
     if(!query.next()){
         QMessageBox::critical(this,"警告","写入数据库失败，请检查数据库连接后重新绑定");
+        CurOpt = InitOpt;
         return;
     }
 }
 
 void Bind::on_getId_clicked()
 {
+    CurOpt = BindOpt;//执行起点
     if(ui->ISBN->text().isEmpty() ||
        ui->bookname->text().isEmpty() ||
        ui->author->text().isEmpty() ||
        ui->press->text().isEmpty()){
         QMessageBox::critical(this,"警告","请输入正确的书籍信息");
+        CurOpt = InitOpt;
         return;
     }
 
     if(!serialPortThread->serialPortIsOpen())
     {
         QMessageBox::critical(this,"警告","请先连接读卡器后再试！");
+        CurOpt = InitOpt;
         return;
     }
     uint16 frameLen;

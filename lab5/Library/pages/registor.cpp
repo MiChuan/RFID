@@ -14,6 +14,8 @@ Registor::Registor(QWidget *parent, SerialPortThread *serialPortThread) :
     } else{
         ui->password->setEchoMode(QLineEdit::Normal);
     }
+    this->handleConnect();
+    CurOpt = InitOpt;
 }
 
 Registor::~Registor()
@@ -28,6 +30,10 @@ void Registor::handleConnect()
 
 void Registor::on_cardIdReceived(QString tagId)
 {
+    if(CurOpt != RegOpt){
+        CurOpt = InitOpt;
+        return;
+    }
     QString userId = ui->userId->text();
     ui->cardId->setText(tagId);//填入识别到的卡号
     DBHelper *helper = DBHelper::getInstance();
@@ -40,6 +46,7 @@ void Registor::on_cardIdReceived(QString tagId)
     if(query.next()){
         QMessageBox::critical(this,"警告","该账户已被注册，不能注册该账户");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //已激活的卡
@@ -49,6 +56,7 @@ void Registor::on_cardIdReceived(QString tagId)
     if(query.next()){
         QMessageBox::critical(this,"警告","该卡已被激活，不能用于注册账户");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //已挂失的卡
@@ -58,6 +66,7 @@ void Registor::on_cardIdReceived(QString tagId)
     if(query.next()){
         QMessageBox::critical(this,"警告","该卡已被挂失，不能用于注册账户");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //已绑定的卡
@@ -67,6 +76,7 @@ void Registor::on_cardIdReceived(QString tagId)
     if(query.next()){
         QMessageBox::critical(this,"警告","该卡已绑定图书，不能用于注册账户");
         helper->closeDatabase();//关闭数据库
+        CurOpt = InitOpt;
         return;
     }
     //已注销的卡
@@ -85,6 +95,11 @@ void Registor::on_cardIdReceived(QString tagId)
 
 void Registor::onDecodeFrame(QByteArray bytes)
 {
+    if(CurOpt != RegOpt){
+        CurOpt = InitOpt;
+        return;
+    }
+    CurOpt = InitOpt;//执行终点
     M1356_RspFrame_t frame = m1356dll->M1356_RspFrameConstructor(bytes);
     if(frame.status.left(2) == "00")
     {
@@ -104,11 +119,13 @@ void Registor::onDecodeFrame(QByteArray bytes)
 
 void Registor::on_getId_clicked()
 {
+    CurOpt = RegOpt;//执行起点
     if(ui->userId->text().isEmpty() ||
        ui->name->text().isEmpty() ||
        ui->tele->text().isEmpty() ||
        ui->password->text().isEmpty()){
         QMessageBox::critical(this,"警告","请输入正确的用户信息");
+        CurOpt = InitOpt;
         return;
     }
 
@@ -121,6 +138,7 @@ void Registor::on_getId_clicked()
     if(!serialPortThread->serialPortIsOpen())
     {
         QMessageBox::critical(this,"警告","请先连接读卡器后再试！");
+        CurOpt = InitOpt;
         return;
     }
     uint16 frameLen;
@@ -132,6 +150,10 @@ void Registor::on_getId_clicked()
 
 void Registor::on_reg_clicked()
 {
+    if(CurOpt != RegOpt){
+        CurOpt = InitOpt;
+        return;
+    }
     QString UID = ui->userId->text();
     QString CID = ui->cardId->text();
     QString UNAME = ui->name->text();
@@ -175,6 +197,7 @@ void Registor::on_reg_clicked()
 
     if(!query.next()){
         QMessageBox::critical(this,"警告","写入数据库失败，请检查数据库连接后重新注册");
+        CurOpt = InitOpt;
         return;
     }
     //写入数据库成功

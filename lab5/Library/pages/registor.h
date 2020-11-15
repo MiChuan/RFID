@@ -39,6 +39,9 @@ private:
     M1356Dll *m1356dll;//13.56MHz模块库的类
 
     SerialPortThread *serialPortThread;//串口线程
+    const int InitOpt = 0;
+    const int RegOpt = 1;
+    int CurOpt;
 };
 
 #endif // REGISTOR_H
