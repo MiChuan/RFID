@@ -7,6 +7,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMessageBox>
+#include <QDebug>
 #include "database/dbhelper.h"
 #include "tools/tools.h"
 #include "tools/serialportthread.h"

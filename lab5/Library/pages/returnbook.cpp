@@ -135,16 +135,16 @@ void ReturnBook::on_cardIdReceived(QString tagId)
 
 void ReturnBook::onDecodeFrame(QByteArray bytes)
 {
-    if(CurOpt != RetOpt){
-        CurOpt = InitOpt;
-        return;
-    }
-    CurOpt = InitOpt;
     M1356_RspFrame_t frame = m1356dll->M1356_RspFrameConstructor(bytes);
     if(frame.status.left(2) == "00")
     {
         if(frame.cmd.remove(" ") == "0610")//写卡0x1006
         {
+            if(CurOpt != RetOpt){
+                CurOpt = InitOpt;
+                return;
+            }
+            CurOpt = InitOpt;
             QMessageBox::information(this,tr("提示"),tr("还书写卡成功！"),QMessageBox::Yes);
         }
     }
@@ -152,6 +152,11 @@ void ReturnBook::onDecodeFrame(QByteArray bytes)
     {
         if(frame.cmd.remove(" ") == "0610")//写卡0x1006
         {
+            if(CurOpt != RetOpt){
+                CurOpt = InitOpt;
+                return;
+            }
+            CurOpt = InitOpt;
             QMessageBox::warning(this,tr("温馨提示"),tr("还书写卡失败，请调整卡与读卡器的距离后再试！"),QMessageBox::Yes);
         }
     }
@@ -159,6 +164,7 @@ void ReturnBook::onDecodeFrame(QByteArray bytes)
 
 void ReturnBook::on_getuserId_clicked()
 {
+    CurOpt = RetOpt;//执行起点
     if(!serialPortThread->serialPortIsOpen())
     {
         QMessageBox::critical(this,"警告","请先连接读卡器后再试！");

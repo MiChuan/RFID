@@ -148,9 +148,9 @@ p, li { white-space: pre-wrap; }
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>360</x>
-     <y>470</y>
-     <width>307</width>
+     <x>270</x>
+     <y>460</y>
+     <width>461</width>
      <height>31</height>
     </rect>
    </property>
@@ -165,7 +165,7 @@ p, li { white-space: pre-wrap; }
     <item>
      <widget class="QPushButton" name="getbookId">
       <property name="text">
-       <string>识别用户卡号</string>
+       <string>识别书籍卡号</string>
       </property>
      </widget>
     </item>

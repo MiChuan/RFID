@@ -95,16 +95,16 @@ void Registor::on_cardIdReceived(QString tagId)
 
 void Registor::onDecodeFrame(QByteArray bytes)
 {
-    if(CurOpt != RegOpt){
-        CurOpt = InitOpt;
-        return;
-    }
-    CurOpt = InitOpt;//执行终点
     M1356_RspFrame_t frame = m1356dll->M1356_RspFrameConstructor(bytes);
     if(frame.status.left(2) == "00")
     {
         if(frame.cmd.remove(" ") == "0610")//写卡0x1006
         {
+            if(CurOpt != RegOpt){
+                CurOpt = InitOpt;
+                return;
+            }
+            CurOpt = InitOpt;//执行终点
             QMessageBox::information(this,tr("提示"),tr("注册账户写卡成功！"),QMessageBox::Yes);
         }
     }
@@ -112,6 +112,11 @@ void Registor::onDecodeFrame(QByteArray bytes)
     {
         if(frame.cmd.remove(" ") == "0610")//写卡0x1006
         {
+            if(CurOpt != RegOpt){
+                CurOpt = InitOpt;
+                return;
+            }
+            CurOpt = InitOpt;//执行终点
             QMessageBox::warning(this,tr("温馨提示"),tr("注册账户写卡失败，请调整卡与读卡器的距离后再试！"),QMessageBox::Yes);
         }
     }
@@ -150,10 +155,12 @@ void Registor::on_getId_clicked()
 
 void Registor::on_reg_clicked()
 {
+    qDebug() << "reg0";
     if(CurOpt != RegOpt){
         CurOpt = InitOpt;
         return;
     }
+    qDebug() << "reg1";
     QString UID = ui->userId->text();
     QString CID = ui->cardId->text();
     QString UNAME = ui->name->text();

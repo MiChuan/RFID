@@ -60,16 +60,16 @@ void Unregistor::on_cardIdReceived(QString tagId)
 
 void Unregistor::onDecodeFrame(QByteArray bytes)
 {
-    if(CurOpt != UnRegOpt){
-        CurOpt = InitOpt;
-        return;
-    }
-    CurOpt = InitOpt;//执行终点
     M1356_RspFrame_t frame = m1356dll->M1356_RspFrameConstructor(bytes);
     if(frame.status.left(2) == "00")
     {
         if(frame.cmd.remove(" ") == "0610")//写卡0x1006
         {
+            if(CurOpt != UnRegOpt){
+                CurOpt = InitOpt;
+                return;
+            }
+            CurOpt = InitOpt;//执行终点
             QMessageBox::information(this,tr("提示"),tr("注销账户写卡成功！"),QMessageBox::Yes);
         }
     }
@@ -77,6 +77,11 @@ void Unregistor::onDecodeFrame(QByteArray bytes)
     {
         if(frame.cmd.remove(" ") == "0610")//写卡0x1006
         {
+            if(CurOpt != UnRegOpt){
+                CurOpt = InitOpt;
+                return;
+            }
+            CurOpt = InitOpt;//执行终点
             QMessageBox::warning(this,tr("温馨提示"),tr("注销账户写卡失败，请调整卡与读卡器的距离后再试！"),QMessageBox::Yes);
         }
     }

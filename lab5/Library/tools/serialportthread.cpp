@@ -69,9 +69,13 @@ void SerialPortThread::setRetryTimes(ReadRetryTimes times)
 void SerialPortThread::writeData(char * data, int frameLen, bool echo)
 {
     int count = 0 ;
+    QString str = "SendMessage: ";
     //8bits一个字符转为4bits，ASCII码中0~F转为16进制表示
     //SendingMsg = CharStringtoHexString(tr(" "),data,frameLen);
-    qDebug() << "SendMessage: "<< QString(data);
+    for(int i = 0; i < frameLen; ++i){
+        str += QString("%1").arg(data[i]);
+    }
+    qDebug() << str;
     //if(echo) emit sendMsg(data,frameLen);
 
     while (frameLen > 0) {//写入串口，最多写15次

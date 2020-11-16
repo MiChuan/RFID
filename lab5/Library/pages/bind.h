@@ -6,6 +6,7 @@
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QDebug>
 #include <QMessageBox>
 #include "database/dbhelper.h"
 #include "tools/tools.h"

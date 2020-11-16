@@ -105,7 +105,7 @@ void ViewInfo::on_bookbtn_clicked()
                     "PRESS as '出版社',"
                     "PTIME as '出版时间',"
                     "DURATION as '可借时长',"
-                    "BSTATUS as '是否借出'"
+                    "BSTATUS as '是否可借'"
                     " from BOOK_INFO;");
     ui->tableView->setModel(model);
     helper->closeDatabase();//关闭数据库

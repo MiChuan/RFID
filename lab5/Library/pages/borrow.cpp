@@ -138,16 +138,16 @@ void Borrow::on_cardIdReceived(QString tagId)
 
 void Borrow::onDecodeFrame(QByteArray bytes)
 {
-    if(CurOpt != BorOpt){
-        CurOpt = InitOpt;
-        return;
-    }
-    CurOpt = InitOpt;//执行终点
     M1356_RspFrame_t frame = m1356dll->M1356_RspFrameConstructor(bytes);
     if(frame.status.left(2) == "00")
     {
         if(frame.cmd.remove(" ") == "0610")//写卡0x1006
         {
+            if(CurOpt != BorOpt){
+                CurOpt = InitOpt;
+                return;
+            }
+            CurOpt = InitOpt;//执行终点
             QMessageBox::information(this,tr("提示"),tr("借书写卡成功！"),QMessageBox::Yes);
         }
     }
@@ -155,6 +155,11 @@ void Borrow::onDecodeFrame(QByteArray bytes)
     {
         if(frame.cmd.remove(" ") == "0610")//写卡0x1006
         {
+            if(CurOpt != BorOpt){
+                CurOpt = InitOpt;
+                return;
+            }
+            CurOpt = InitOpt;//执行终点
             QMessageBox::warning(this,tr("温馨提示"),tr("借书写卡失败，请调整卡与读卡器的距离后再试！"),QMessageBox::Yes);
         }
     }
@@ -162,6 +167,7 @@ void Borrow::onDecodeFrame(QByteArray bytes)
 
 void Borrow::on_getuserId_clicked()
 {
+    CurOpt = BorOpt;//执行起点
     if(!serialPortThread->serialPortIsOpen())
     {
         QMessageBox::critical(this,"警告","请先连接读卡器后再试！");

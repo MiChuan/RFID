@@ -79,15 +79,13 @@ void Bind::on_cardIdReceived(QString tagId)
 
 void Bind::onDecodeFrame(QByteArray bytes)
 {
-    if(CurOpt != BindOpt){
-        CurOpt = InitOpt;
-        return;
-    }
-    CurOpt = InitOpt;
+
 }
 
 void Bind::on_bindcard_clicked()
 {
+    qDebug() <<"bind0";
+    qDebug() << CurOpt;
     if(CurOpt != BindOpt){
         CurOpt = InitOpt;
         return;
