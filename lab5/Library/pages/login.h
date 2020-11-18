@@ -7,6 +7,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMessageBox>
+#include <QDebug>
 #include <QDate>
 #include "tools/useraccount.h"
 #include "database/dbhelper.h"

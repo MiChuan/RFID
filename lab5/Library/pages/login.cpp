@@ -42,6 +42,8 @@ void login::remindReturnBook(QString UID)
     query.exec();
     if(query.next() && query.value("BNUM").toInt() < 5){//可借数量 4,3,2,1,0
         int count = 5 - query.value("BNUM").toInt();//已借数量 1,2,3,4,5
+        QString BNUM = query.value("BNUM").toString();
+        qDebug() << "UID: " << UID << " BNUM: " << BNUM;//debug
         sql = QString("SELECT * FROM RECORD WHERE UID = '%1';").arg(UID);
         query.prepare(sql);
         query.exec();
@@ -50,14 +52,15 @@ void login::remindReturnBook(QString UID)
             sql = QString("SELECT * FROM BOOK_INFO WHERE BID = '%1';").arg(BID);
             query1.prepare(sql);
             query1.exec();
-            if(query1.value("BSTATUS").toString() == "N"){//最新记录的书未还
+            if(query1.next() && query1.value("BSTATUS").toString() == "N"){//最新记录的书未还
                 count--;
                 DDL = query.value("DDL").toString();//截止日期
                 ddline = QDate::fromString(DDL,"yyyy-MM-dd");
                 qint64 gap = curDate.daysTo(ddline);//今天到截止日期的时间
                 ReTime = QString::number(gap);
+                qDebug() << "BID: " << BID << " DDL: " << DDL << "gap: " << gap;//debug
                 if(gap <= this->remindTime){
-                    QString text = tr("书标签号:%1\r\n截止日期:%2\r\n剩余时间:%3")
+                    QString text = tr("书标签号:%1\r\n截止日期:%2\r\n剩余时间:%3天")
                             .arg(BID)
                             .arg(DDL)
                             .arg(ReTime);

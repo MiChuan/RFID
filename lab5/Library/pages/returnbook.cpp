@@ -93,13 +93,15 @@ void ReturnBook::on_cardIdReceived(QString tagId)
             return;
         }
         //已激活的卡
+        qDebug() << "CID: " << tagId;//debug
         sql = QString("SELECT * FROM USER_INFO WHERE CID = '%1' and USTATUS = 'Y';").arg(tagId);
-        QString UID = query.value("UID").toString();
-        ui->uid->setText(UID);
-        QString BNUM = query.value("BNUM").toString();
         query.prepare(sql);
         query.exec();
         if(query.next()){
+            QString UID = query.value("UID").toString();
+            ui->uid->setText(UID);
+            QString BNUM = query.value("BNUM").toString();
+            qDebug() << "UID: " << UID << " BNUM: " << BNUM;//debug
             this->flag = Init;
             sql = QString("SELECT * FROM RECORD WHERE UID = '%1' AND BID = '%2';").arg(UID).arg(ui->bookId->text());
             query.prepare(sql);
@@ -107,6 +109,7 @@ void ReturnBook::on_cardIdReceived(QString tagId)
             if(query.last()){
                 QString RID = query.value("RID").toString();
                 QString RTIME = curDate.toString("yyyy-MM-dd");
+                qDebug() << "RID: " << RID << " RTIME: " << RTIME;//debug
                 ui->rid->setText(RID);
                 sql = QString("UPDATE RECORD SET RTIME = '%1' WHERE RID = '%2';").arg(RTIME).arg(RID);
                 query.prepare(sql);
