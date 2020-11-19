@@ -26,7 +26,7 @@
     <item row="0" column="1">
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>欢迎使用生理数据监测系统</string>
+       <string>欢迎使用图书管理系统</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
